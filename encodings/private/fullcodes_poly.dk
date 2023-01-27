@@ -12,7 +12,7 @@ cPi  : Code -> (Code -> Code) -> Code.
 cLam : (Code -> Code) -> Code.
 def cApp : Code -> Code -> Code.
 
-def Decode : Code -> Type.
+injective Decode : Code -> Type.
 def uncode : t : Code -> Code -> Decode t.
 def code : t : Code -> Decode t -> Code.
 
@@ -35,7 +35,7 @@ def code : t : Code -> Decode t -> Code.
 
 [s1,s2,s3,p,a,b]
   prod s1 s2 s3 p a b -->
-  uncode (cU s3) (cPi (code (cU s1) a) (x => code (cU s2) (b (uncode (code (cU s1) a) x)))).
+  uncode (cU s3) (cPi (code (cU s1) a) (x : Decode (code (cU s1) a) => code (cU s2) (b (uncode (code (cU s1) a) x)))).
 
 
 (;---------------------------  Casts  -----------------------------;)
@@ -83,7 +83,7 @@ def EQ : Code -> Code -> Bool.
 
 [A,B,F]
   code (cPi A B) F -->
-  cLam (x => code (B x) (F (uncode A x))).
+  cLam (x : Decode Type => code (B x) (F (uncode A x))).
 
 [A,B,F,U]
   uncode (cPi A B) F U -->
@@ -92,7 +92,7 @@ def EQ : Code -> Code -> Bool.
 [A,B,F]
   uncode (cPi A B) (cLam F)
   -->
-  x => uncode (B (code A x)) (F (code A x)).
+  x : Decode Type => uncode (B (code A x)) (F (code A x)).
 
 [A,B,F,U]
   cApp (code (cPi A B) F) U -->

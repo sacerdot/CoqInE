@@ -83,7 +83,7 @@ def EQ : Code -> Code -> Bool.
 
 [A,B,F]
   code (cPi A B) F -->
-  cLam A (x => code (B x) (F x)).
+  cLam A (x : Decode A => code (B x) (F x)).
 
 [A,B,F,U]
   uncode (cPi A B) F U -->
@@ -92,7 +92,7 @@ def EQ : Code -> Code -> Bool.
 [A,A',B,F]
   uncode (cPi A B) (cLam A' F)
   -->
-  x => uncode (B x) (F (uncode A' (code A x))).
+  x : Decode A => uncode (B x) (F (uncode A' (code A x))).
 
 [A,B,F,U]
   cApp (code (cPi A B) F) U -->

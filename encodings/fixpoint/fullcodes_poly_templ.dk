@@ -211,7 +211,7 @@ def app_body :
 [n,SA,MA,A,B,body,a]
   app_body _ (MAcons n SA MA) A B body a
   -->
-  f => app_body n MA A B (body f) a.
+  f : Decode (SA_code SA) => app_body n MA A B (body f) a.
 
 (; guarded? s A x --> guarded   iif x starts with a constructor   ;)
 Guarded? : Type.
@@ -309,7 +309,7 @@ def fix_proj_3 :
 [n,MA,MF,A,body]
   fix_proj_2 n MA MF A body guarded
   -->
-  fix_proj_3 A n MA (k => fix_proj n MA MF k) body.
+  fix_proj_3 A n MA (k : N => fix_proj n MA MF k) body.
 
 [body] fix_proj_3 _ _ MAnil _ body --> body.
 
@@ -321,7 +321,7 @@ def fix_proj_3 :
   -->
   fix_proj_3 A
     i MAi
-    (k => f (_S k))
+    (k : N => f (_S k))
     (body (f 0)).
 
 
