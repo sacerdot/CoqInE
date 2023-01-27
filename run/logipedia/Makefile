@@ -3,8 +3,8 @@
 # Variables
 COQ_MAKEFILE ?= coq_makefile
 COQC         ?= coqc
-DKCHECK      ?= dkcheck
-DKDEP        ?= dkdep
+DKCHECK      ?= dk check
+DKDEP        ?= dk dep
 VERBOSE      ?=
 MAINFILE     ?= main
 
@@ -43,7 +43,8 @@ depend:
 check: $(DKOS)
 
 %.dko: %.dk depend
-	$(DKCHECK) -I $(OUTFOLDER) --eta --snf -e $<
+	#$(DKCHECK) -I $(OUTFOLDER) --eta --snf -e $<
+	$(DKCHECK) -I $(OUTFOLDER) --eta -e $<
 
 clean: CoqMakefile
 	make -f CoqMakefile - clean
