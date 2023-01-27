@@ -299,3 +299,13 @@ let pp_term x =
   | Dedukti          -> DeduktiPrinter.pp_term x
   | OnelineDedukti   -> DeduktiOnelinePrinter.pp_term x
   | CondensedDedukti -> DeduktiCondensedPrinter.pp_term x
+
+(* Coq's Typeclasses.is_instance totally bugged; let's reimplement it inefficiently *)
+let is_instance gref =
+ List.exists (Globnames.eq_gr gref) (List.map Typeclasses.instance_impl (Typeclasses.all_instances ()))
+
+let print_type_class_infos fmt label' gref =
+ if Typeclasses.is_class gref then
+   print fmt (command "TYPE_CLASS" [label']);
+ if is_instance gref then
+   print fmt (command "TYPE_CLASS_INSTANCE" [label'])

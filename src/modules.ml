@@ -20,7 +20,6 @@ let isalias resolver kername =
   then None
   else Some can
 
-
 let translate_alias_constant_body info env alias label const =
   let label' = Cname.translate_element_name info env label in
   debug "Translating constant alias %a -> %a"
@@ -91,10 +90,7 @@ let translate_constant_body info env isalias label const =
     Dedukti.print info.fmt (Dedukti.definition true label' const_type' constr')
  end ;
  let gref = Globnames.ConstRef (Names.Constant.make2 info.module_path label) in
- if Typeclasses.is_class gref then
-   Dedukti.print info.fmt (Dedukti.command "TYPE_CLASS" [label']);
- if Typeclasses.is_instance gref then
-   Dedukti.print info.fmt (Dedukti.command "TYPE_CLASS_INSTANCE" [label']);
+ Dedukti.print_type_class_infos info.fmt label' gref
 end
 
 (** Translate the body of mutual inductive definitions [mind]. *)

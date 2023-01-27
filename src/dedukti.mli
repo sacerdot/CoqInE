@@ -63,3 +63,5 @@ val print  : instruction printer
 val printc : instruction printer
 
 val pp_term : term printer
+
+val print_type_class_infos : Format.formatter -> string -> Globnames.global_reference -> unit

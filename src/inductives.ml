@@ -237,7 +237,9 @@ let translate_inductive info env label ind  =
     Encoding.is_templ_polymorphism_ind_code() ||
     List.exists (fun p -> Option.has_some (is_template_parameter ind p)) ind.mind_params_ctxt
   in
-  Dedukti.print info.fmt (Dedukti.declaration definable name' arity')
+  Dedukti.print info.fmt (Dedukti.declaration definable name' arity') ;
+  let gref = Globnames.IndRef (Names.MutInd.make2 info.module_path label, ind.index) in
+  Dedukti.print_type_class_infos info.fmt name' gref
 
 (* Template polymorphic inductives types are "sort-irrelevant" in some of their arguments
    This means that instances where the arguments are lifted should be
@@ -451,6 +453,8 @@ let translate_constructors info env label ind =
         ind.univ_poly_names ind.univ_poly_cstr cons_type' in
     debug "Cons_type: %a" Dedukti.pp_term cons_type';
     Dedukti.print info.fmt (Dedukti.declaration true cons_name' cons_type');
+    let gref = Globnames.ConstructRef ((mind, ind.index), j) in
+    Dedukti.print_type_class_infos info.fmt cons_name' gref
   done
 
 
