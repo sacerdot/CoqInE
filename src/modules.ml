@@ -66,6 +66,7 @@ let translate_constant_body info env isalias label const =
   let const_type' = Terms.translate_types info env uenv const_type in
   let const_type' = Tsorts.add_poly_params_type univ_poly_params univ_poly_cstr const_type' in
 
+  begin
   match const.const_body with
   | Undef inline ->
     (* For now assume inline is None. *)
@@ -88,6 +89,12 @@ let translate_constant_body info env isalias label const =
     let constr' = Terms.translate_constr ~expected_type:const_type info env uenv constr in
     let constr' = Tsorts.add_poly_params_def univ_poly_params univ_poly_cstr constr' in
     Dedukti.print info.fmt (Dedukti.definition true label' const_type' constr')
+ end ;
+ let gref = Globnames.ConstRef (Names.Constant.make2 info.module_path label) in
+ if Typeclasses.is_class gref then
+   Dedukti.print info.fmt (Dedukti.command "TYPE_CLASS" [label']);
+ if Typeclasses.is_instance gref then
+   Dedukti.print info.fmt (Dedukti.command "TYPE_CLASS_INSTANCE" [label']);
 end
 
 (** Translate the body of mutual inductive definitions [mind]. *)
